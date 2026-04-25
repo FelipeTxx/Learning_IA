@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+from rules import analisar_postura
 
 camera = cv2.VideoCapture(0)
 mp_pose = mp.solutions.pose
@@ -28,18 +29,12 @@ while True:
         nariz = pontos[mp_pose.PoseLandmark.NOSE]
         quadril_esquerdo = pontos[mp_pose.PoseLandmark.LEFT_HIP]
         quadril_direito = pontos[mp_pose.PoseLandmark.RIGHT_HIP]
-        
-        #print(nariz, ": cabeça")
-        #print(quadril_esquerdo, ": quadril_esquerdo")
-        #print(quadril_direito, ": quadril_direito")
+        joelho_esquerdo = pontos[mp_pose.PoseLandmark.LEFT_KNEE]
+        joelho_direito = pontos[mp_pose.PoseLandmark.RIGHT_KNEE]
 
-        if nariz.y >= quadril_direito.y-0.2 and nariz.y <= quadril_direito.y+0.2:
-            print("DEITADO")
-        else:
-            print("DE PÉ")        
-    
-    
 
+        analisar_postura(nariz, quadril_esquerdo, quadril_direito, joelho_esquerdo, joelho_direito)       
+    
 
     if cv2.waitKey(1) == 27:
         break
