@@ -1,14 +1,18 @@
 from types import SimpleNamespace
 import math
-estado = ["Iniciando!"]
+import time
+from collections import Counter
+estado = []
 tempo_validador = 60
-tempo = 15
+tempo = 2
 primeiro_quadro = True
-
-
+pontos_emPe = 0
+pontos_sentado = 0
+pontos_deitado = 0
+inicio = time.monotonic()
 
 def analisar_postura(nariz, quadril_esquerdo, quadril_direito, joelho_esquerdo, joelho_direito):
-    global estado, tempo_validador, primeiro_quadro 
+    global estado, tempo_validador, primeiro_quadro, pontos_sentado, pontos_emPe, pontos_deitado, inicio
     if len(estado) >= 30:
         estado.pop(0)
     centro_quadril = SimpleNamespace(
@@ -30,48 +34,17 @@ def analisar_postura(nariz, quadril_esquerdo, quadril_direito, joelho_esquerdo, 
     #angulo entre joelho e quadril
     anguloJQ = math.degrees(math.atan2(dy_quadrilJoelho, dx_quadrilJoelho))
 
-    #print(anguloJQ)
-
-    #Verificar se esta deitado baseando-se no angulo geral do corpo
-    if anguloG <= 50:       
-        if primeiro_quadro:
-            tempo_validador = tempo 
-            primeiro_quadro = False       
-        tempo_validador-=1
-        if tempo_validador <= 0:
-            if estado[-1] != "deitado":
-                print(estado[-1])
-            estado.append("deitado")
-            tempo_validador = tempo 
-            primeiro_quadro = True           
-            return estado
-    #Verificar se esta em pé baseando-se no anguloG
+    pontos_deitado = 90 - int(anguloG)
+    dist = abs(centro_quadril.y - centro_joelho.y)  
+    pontos_sentado = max(0, (0.4 - dist) * 100)
+    pontos_emPe = (-45+int(anguloG)) - pontos_sentado
     
-    if anguloG > 70 and not(abs(centro_quadril.y-centro_joelho.y) <= 0.23):
-        if primeiro_quadro:
-            tempo_validador = tempo 
-            primeiro_quadro = False     
-        tempo_validador-=1  
-        if tempo_validador <= 0:
-            tempo_validador-=1
-            if estado[-1] != "de_pe":
-                print(estado[-1])
-            estado.append("de_pe")
-            tempo_validador = tempo 
-            primeiro_quadro = True        
-            return estado
-    #Verificar se esta sentado a partir do angulo do joelho e quadril central e tambem pela proximidade do jeelho central com o quadril central
-    if anguloJQ < 45 or abs(centro_quadril.y-centro_joelho.y) <= 0.23:
-            if primeiro_quadro:
-                tempo_validador = tempo 
-                primeiro_quadro = False     
-            tempo_validador-=1  
-            if tempo_validador <= 0:
-                if estado[-1] != "sentado":
-                    print(estado[-1])
-                estado.append("sentado")
-                tempo_validador = tempo 
-                primeiro_quadro = True
-                return estado
-    return estado
-
+    if pontos_deitado > pontos_emPe and pontos_deitado > pontos_sentado:
+        estado.append("Deitado")
+    elif pontos_emPe > pontos_deitado and pontos_emPe > pontos_sentado:
+        estado.append("Em pe")
+    elif pontos_sentado > pontos_deitado and pontos_sentado > pontos_emPe:
+        estado.append("Sentado")
+    mais_comum = Counter(estado).most_common(1)[0][0]
+    print(mais_comum)
+    return str(mais_comum)
