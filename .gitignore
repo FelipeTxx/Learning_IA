@@ -1,0 +1,14 @@
+.venv/
+venv/
+yolo_env/
+site-packages/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.dll
+*.exe
+*.mp3
+snapshot.json
+tinytuya.json
+teste.jpg
