@@ -18,6 +18,8 @@ while True:
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     resultado = pose.process(rgb)
     resultado_maos = hands.process(rgb)
+    estado_mao_direita = None
+    estado_mao_esquerda = None
 
     if resultado.pose_landmarks:
         mp_drawing.draw_landmarks(frame, resultado.pose_landmarks, mp_pose.POSE_CONNECTIONS)
@@ -39,7 +41,7 @@ while True:
         postura_analisada = analisar_postura(nariz, quadril_esquerdo, quadril_direito, joelho_esquerdo, joelho_direito, pe_esquerdo, pe_direito)
         cv2.putText(frame, postura_analisada, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-    if resultado_maos.multi_hand_landmarks:
+    if resultado_maos.multi_hand_landmarks and resultado_maos.multi_handedness:
         for i, hand_landmarks in enumerate(resultado_maos.multi_hand_landmarks):
             label = resultado_maos.multi_handedness[i].classification[0].label
             
@@ -71,13 +73,18 @@ while True:
 
             estado_mao = calcular_mao(pulso, polegar_cmc, polegar_mcp, polegar_ip, polegar_tip, indicador_mcp, indicador_pip, indicador_dip, indicador_tip, medio_mcp, medio_pip, medio_dip, medio_tip, anelar_mcp, anelar_pip, anelar_dip, anelar_tip, mindinho_mcp, mindinho_pip, mindinho_dip, mindinho_tip)
             estado_mao.lado = label
+            
+            if label == "Right":
+                estado_mao_direita = estado_mao
+            elif label == "Left":
+                estado_mao_esquerda = estado_mao
 
-    if resultado.pose_landmarks and resultado_maos.multi_hand_landmarks:
-        handMonitor = HandMonitor(estado_mao.lado,estado_mao.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
+    if resultado.pose_landmarks and estado_mao_direita:
+        handMonitor = HandMonitor(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
         handMonitor
         
         LightControl(handMonitor)
-        brightControl(estado_mao, handMonitor)
+        brightControl(estado_mao_direita, handMonitor)
     cv2.imshow("Tela", frame)
     if cv2.waitKey(1) == 27:
         break

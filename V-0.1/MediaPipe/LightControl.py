@@ -33,8 +33,8 @@ lamp = tinytuya.BulbDevice(
     )
 
 lamp.set_socketPersistent(True)
-status = lamp.status()
-ligada = status['dps']['20']
+status = None
+ligada = False
 def LightControl(get_hand):
     global status, ligada,cooldown,intervalo
     
