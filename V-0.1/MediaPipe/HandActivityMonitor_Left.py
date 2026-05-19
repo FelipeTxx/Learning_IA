@@ -20,7 +20,7 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
     mao = estado_mao
     #print(ombro_direito.x, ": ombro direito     !       ", pulso_direito.x, ": cotoVelo direito")
 
-    #Definiçao braco direito
+    #DefiniÃ§ao braco direito
     dfX_ombD_PlsD = abs(ombro_direito.x - pulso_direito.x)
     dfY_ombD_PlsD = abs(ombro_direito.y - pulso_direito.y)
     
@@ -28,7 +28,7 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
     dfY_ctvD_ombD = abs(cotovelo_direito.y - ombro_direito.y)
 
 
-    #Definiçao braco esquerdo
+    #DefiniÃ§ao braco esquerdo
     dfX_ombD_PlsE = abs(ombro_esquerdo.x - pulso_esquerdo.x)
     dfY_ombD_PlsE = abs(ombro_esquerdo.y - pulso_esquerdo.y)
     
@@ -43,7 +43,7 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
         if ft == 0: retorno.posicao_correta_braco = True;ft+=1  # noqa: E701, E702
         if not retorno.posicao_correta_braco:
             retorno.posicao_correta_braco = True
-            print("Posição CORRETA")
+            print("PosiÃ§Ã£o CORRETA")
 
         if mao == 1:   
             mao_est = 1
@@ -69,7 +69,7 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
         
         
         if retorno.posicao_correta_braco:
-            print("Posiçao errada")
+            print("PosiÃ§ao errada")
             retorno.posicao_correta_braco = False
             
     return retorno
@@ -82,4 +82,3 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
 
             
             
-

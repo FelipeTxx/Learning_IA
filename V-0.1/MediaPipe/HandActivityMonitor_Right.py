@@ -3,6 +3,9 @@ from TimerF import timerFunction
 from types import SimpleNamespace
 from collections import Counter
 
+tempoInicial = 0
+podeAgir = True
+
 tempo = 0.5
 mao_est = 2
 braco_em_uso = 0
@@ -16,11 +19,12 @@ retorno = SimpleNamespace(
 )
 
 def HandMonitor_Right(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo):
-    global tempo, mao_est, braco_em_uso, ft
+    global tempo, mao_est, braco_em_uso, ft, tempo_liberado, tempoInicial, podeAgir
+    
     mao = estado_mao
     #print(ombro_direito.x, ": ombro direito     !       ", pulso_direito.x, ": cotoVelo direito")
 
-    #Definiçao braco direito
+    #DefiniÃ§ao braco direito
     dfX_ombD_PlsD = abs(ombro_direito.x - pulso_direito.x)
     dfY_ombD_PlsD = abs(ombro_direito.y - pulso_direito.y)
     
@@ -28,7 +32,7 @@ def HandMonitor_Right(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotov
     dfY_ctvD_ombD = abs(cotovelo_direito.y - ombro_direito.y)
 
 
-    #Definiçao braco esquerdo
+    #DefiniÃ§ao braco esquerdo
     dfX_ombD_PlsE = abs(ombro_esquerdo.x - pulso_esquerdo.x)
     dfY_ombD_PlsE = abs(ombro_esquerdo.y - pulso_esquerdo.y)
     
@@ -40,28 +44,43 @@ def HandMonitor_Right(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotov
     
     
     if dfX_ombD_PlsD < 0.1  and dfY_ombD_PlsD < 0.1 and dfX_ctvD_ombD < 0.1 and dfY_ctvD_ombD < 0.1:
+        
         if ft == 0: retorno.posicao_correta_braco = True;ft+=1  # noqa: E701, E702
+
+        if not podeAgir:
+            tempoInicial += 1
+            if tempoInicial >= 30:
+                podeAgir = True
+                print("PODE AGIR")
+                tempoInicial = 0
         if not retorno.posicao_correta_braco:
+            tempoInicial = 0
+            podeAgir = True
             retorno.posicao_correta_braco = True
             print("Posição CORRETA")
-        print(mao, "   -   ",mao_est)
-        if mao_est == 1 and mao == 0:
+        if mao_est == 1 and mao == 0 and podeAgir and not retorno.maoFechou:
             print("Mão Fechou!!!")
+            podeAgir = False
             retorno.maoFechou = True
             retorno.maoAbriu = False
-        elif mao_est == 0 and mao == 1:
-            print("MaoAbriu!!")
+        elif mao_est == 0 and mao == 1 and podeAgir and not retorno.maoAbriu:
+            print("Mão Abriu!!")
+            podeAgir = False
             retorno.maoFechou = False
             retorno.maoAbriu = True
 
         mao_est = mao
     else:
+        tempoInicial = 0
+        podeAgir = True
         mao_est = 1
         mao = 1
         
         
         if retorno.posicao_correta_braco:
-            print("Posiçao errada")
+            print("Posição errada")
+            tempoInicial = 0
+            podeAgir = True
             retorno.posicao_correta_braco = False
             
     return retorno
@@ -74,4 +93,3 @@ def HandMonitor_Right(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotov
 
             
             
-

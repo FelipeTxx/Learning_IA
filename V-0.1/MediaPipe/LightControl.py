@@ -37,25 +37,26 @@ status = None
 ligada = False
 tempo_liberado = 0
 
+
 def LightControl(get_hand):
-    global tempo_liberado, ligada, status
+    global tempo_liberado, ligada
 
     agora = time.time()
-    em_intervalo = agora < tempo_liberado
 
-    if get_hand.maoFechou and ligada and not em_intervalo:
+    if agora < tempo_liberado:
+        return
+
+    if get_hand.maoFechou and ligada:
         lamp.turn_off()
-        status = lamp.status()
         ligada = False
-        def_fala("ptMulher", "Luz Desligada!")
-        tempo_liberado = agora + 2
+        tempo_liberado = agora + 2  
+        return
 
-    elif get_hand.maoAbriu and not ligada and not em_intervalo:
+    if get_hand.maoAbriu and not ligada:
         lamp.turn_on()
-        status = lamp.status()
         ligada = True
-        def_fala("ptMulher", "Luz Ligada!")
         tempo_liberado = agora + 2
+        return
 def normalizar(valor, min_val, max_val):
     return (valor - min_val) / (max_val - min_val)
 def brightControl(estado_mao, get_hand):
