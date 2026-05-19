@@ -75,9 +75,9 @@ while True:
             estado_mao.lado = label
             
             if label == "Right":
-                estado_mao_direita = estado_mao
-            elif label == "Left":
                 estado_mao_esquerda = estado_mao
+            elif label == "Left":
+                estado_mao_direita = estado_mao
 
     if resultado.pose_landmarks and estado_mao_direita:
         handMonitor = HandMonitor(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
