@@ -35,37 +35,27 @@ lamp = tinytuya.BulbDevice(
 lamp.set_socketPersistent(True)
 status = None
 ligada = False
-def LightControl(get_hand):
-    global status, ligada,cooldown,intervalo
-    
+tempo_liberado = 0
 
-    
-    if get_hand.maoFechou and ligada and not intervalo:
+def LightControl(get_hand):
+    global tempo_liberado, ligada, status
+
+    agora = time.time()
+    em_intervalo = agora < tempo_liberado
+
+    if get_hand.maoFechou and ligada and not em_intervalo:
         lamp.turn_off()
         status = lamp.status()
         ligada = False
-        print("Desligou!")
-        def_fala("ptMulher", "A luz do quarto Desligou!")
-        intervalo = True 
-        
+        def_fala("ptMulher", "Luz Desligada!")
+        tempo_liberado = agora + 2
 
-    
-        
-        
-    elif get_hand.maoAbriu and not ligada and not intervalo:
+    elif get_hand.maoAbriu and not ligada and not em_intervalo:
         lamp.turn_on()
         status = lamp.status()
         ligada = True
-        print("Ligou!")
-        def_fala("ptHomem", "A luz do quarto ligou!")
-        intervalo = True
-    
-    if intervalo == True:
-        cooldown+=1
-        if cooldown >= 30:
-            print("excedeu")
-            intervalo = False
-            cooldown = 0
+        def_fala("ptMulher", "Luz Ligada!")
+        tempo_liberado = agora + 2
 def normalizar(valor, min_val, max_val):
     return (valor - min_val) / (max_val - min_val)
 def brightControl(estado_mao, get_hand):

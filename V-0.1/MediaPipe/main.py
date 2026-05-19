@@ -2,7 +2,8 @@ import cv2
 import mediapipe as mp
 from Bodyrules import analisar_postura
 from HandRules import calcular_mao
-from HandActivityMonitor import HandMonitor
+from HandActivityMonitor_Right import HandMonitor_Right
+from HandActivityMonitor_Left import HandMonitor_Left
 from LightControl import LightControl
 from LightControl import brightControl
 
@@ -80,11 +81,15 @@ while True:
                 estado_mao_direita = estado_mao
 
     if resultado.pose_landmarks and estado_mao_direita:
-        handMonitor = HandMonitor(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
-        handMonitor
+        handMonitorright = HandMonitor_Right(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
+        handMonitorright
         
-        LightControl(handMonitor)
-        brightControl(estado_mao_direita, handMonitor)
+        LightControl(handMonitorright)
+        
+    if resultado.pose_landmarks and estado_mao_esquerda:
+        handMonitorLeft = HandMonitor_Left(estado_mao_esquerda.lado,estado_mao_esquerda.aberta, ombro_direito, ombro_esquerdo, cotovelo_direito, cotovelo_esquerdo, pulso_esquerdo, pulso_direito)
+        handMonitorLeft
+        brightControl(estado_mao_esquerda, handMonitorLeft)
     cv2.imshow("Tela", frame)
     if cv2.waitKey(1) == 27:
         break

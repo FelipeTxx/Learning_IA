@@ -15,7 +15,7 @@ retorno = SimpleNamespace(
     posicao_correta_braco = False
 )
 
-def HandMonitor(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo):
+def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo):
     global tempo, mao_est, braco_em_uso, ft
     mao = estado_mao
     #print(ombro_direito.x, ": ombro direito     !       ", pulso_direito.x, ": cotoVelo direito")
