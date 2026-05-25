@@ -13,6 +13,8 @@ pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2)
+light_c=0
+text_light="None"
 
 while True:
     ret, frame = camera.read()
@@ -72,6 +74,9 @@ while True:
             mindinho_dip  = pontos_mao[mp_hands.HandLandmark.PINKY_DIP]
             mindinho_tip  = pontos_mao[mp_hands.HandLandmark.PINKY_TIP]
 
+            
+
+
             estado_mao = calcular_mao(pulso, polegar_cmc, polegar_mcp, polegar_ip, polegar_tip, indicador_mcp, indicador_pip, indicador_dip, indicador_tip, medio_mcp, medio_pip, medio_dip, medio_tip, anelar_mcp, anelar_pip, anelar_dip, anelar_tip, mindinho_mcp, mindinho_pip, mindinho_dip, mindinho_tip)
             estado_mao.lado = label
             
@@ -84,12 +89,21 @@ while True:
         handMonitorright = HandMonitor_Right(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
         handMonitorright
         
-        LightControl(handMonitorright)
+        light_c = LightControl(handMonitorright)
+        print(light_c)
+        if light_c != None and light_c != 0:
+            
+            print(light_c)
+            text_light = light_c
+
         
     if resultado.pose_landmarks and estado_mao_esquerda:
         handMonitorLeft = HandMonitor_Left(estado_mao_esquerda.lado,estado_mao_esquerda.aberta, ombro_direito, ombro_esquerdo, cotovelo_direito, cotovelo_esquerdo, pulso_esquerdo, pulso_direito)
         handMonitorLeft
         brightControl(estado_mao_esquerda, handMonitorLeft)
+   
+
+    cv2.putText(frame, str(text_light), (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     cv2.imshow("Tela", frame)
     if cv2.waitKey(1) == 27:
         break

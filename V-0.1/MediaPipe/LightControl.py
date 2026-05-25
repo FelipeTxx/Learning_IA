@@ -50,13 +50,13 @@ def LightControl(get_hand):
         lamp.turn_off()
         ligada = False
         tempo_liberado = agora + 2  
-        return
+        return ligada
 
     if get_hand.maoAbriu and not ligada:
         lamp.turn_on()
         ligada = True
         tempo_liberado = agora + 2
-        return
+        return ligada
 def normalizar(valor, min_val, max_val):
     return (valor - min_val) / (max_val - min_val)
 def brightControl(estado_mao, get_hand):

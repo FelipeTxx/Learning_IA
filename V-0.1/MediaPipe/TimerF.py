@@ -7,5 +7,6 @@ def timerFunction(tempo):
     tempoPassado = time.perf_counter() - tempoInicial
     if tempoPassado >= tempo:
         return 1
-    else: return 0
+    else: 
+        return 0
     
