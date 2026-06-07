@@ -7,7 +7,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from TTS.Voice_Out import def_fala
+#from TTS.Voice_Out import def_fala
 cooldown = 0
 intervalo = False
 
