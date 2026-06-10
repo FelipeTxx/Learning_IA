@@ -26,11 +26,13 @@ intervalo = False
 # lamp.set_colour(0, 0, 255)
 # print("Azul!")
 lamp = tinytuya.BulbDevice(
-    dev_id='eb6cf639a85ba6907by7ss',
-    address='192.168.0.118',
-    local_key='CGBlNgA==+v~1Lqc',
-    version=3.5
-    )
+    'eb6cf639a85ba6907by7ss',
+    '192.168.0.109',
+    'CGBlNgA==+v~1Lqc'
+)
+
+
+lamp.set_version(3.5)
 
 lamp.set_socketPersistent(True)
 status = None
@@ -38,7 +40,7 @@ ligada = False
 tempo_liberado = 0
 
 
-def LightControl(get_hand):
+def lightControler(get_hand):
     global tempo_liberado, ligada
 
     agora = time.time()

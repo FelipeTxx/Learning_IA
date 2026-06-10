@@ -1,10 +1,11 @@
 import cv2
 import mediapipe as mp
+from WakeUpSystem import verificar_postura
 from Bodyrules import analisar_postura
 from HandRules import calcular_mao
 from HandActivityMonitor_Right import HandMonitor_Right
 from HandActivityMonitor_Left import HandMonitor_Left
-from LightControl import LightControl
+from LightControl import lightControler
 from LightControl import brightControl
 
 camera = cv2.VideoCapture(0)
@@ -41,8 +42,21 @@ while True:
         pulso_direito = pontos[mp_pose.PoseLandmark.RIGHT_WRIST]
         pulso_esquerdo = pontos[mp_pose.PoseLandmark.LEFT_WRIST]
 
+        
         postura_analisada = analisar_postura(nariz, quadril_esquerdo, quadril_direito, joelho_esquerdo, joelho_direito, pe_esquerdo, pe_direito)
-        cv2.putText(frame, postura_analisada, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        postura_analisada = analisar_postura(
+            nariz,
+            quadril_esquerdo,
+            quadril_direito,
+            joelho_esquerdo,
+            joelho_direito,
+            pe_esquerdo,
+            pe_direito
+        )
+
+        verificar_postura(postura_analisada)
+
+        cv2.putText(frame,postura_analisada,(30, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0),2)
 
     if resultado_maos.multi_hand_landmarks and resultado_maos.multi_handedness:
         for i, hand_landmarks in enumerate(resultado_maos.multi_hand_landmarks):
@@ -88,13 +102,15 @@ while True:
     if resultado.pose_landmarks and estado_mao_direita:
         handMonitorright = HandMonitor_Right(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
         handMonitorright
-        
-        light_c = LightControl(handMonitorright)
-        print(light_c)
+        print("!")
+        print(handMonitorright)
+        light_c = lightControler(handMonitorright)
+        #print(light_c, "lightc 1")
+        print("@")
         if light_c != None and light_c != 0:
-            
-            print(light_c)
-            text_light = light_c
+            print(light_c, "lightc 2")
+            #text_light = light_c
+            print("#")
 
         
     if resultado.pose_landmarks and estado_mao_esquerda:
@@ -103,7 +119,7 @@ while True:
         brightControl(estado_mao_esquerda, handMonitorLeft)
    
 
-    cv2.putText(frame, str(text_light), (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    #cv2.putText(frame, str(text_light), (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     cv2.imshow("Tela", frame)
     if cv2.waitKey(1) == 27:
         break
