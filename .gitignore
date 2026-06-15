@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+*.spec
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# TTS cache
+V-0.1/TTS/cache/
+
+# Legacy PC control build outputs
+V-0.1/PcControl/build/
+V-0.1/PcControl/dist/
+V-0.1/PcControl/*.log
