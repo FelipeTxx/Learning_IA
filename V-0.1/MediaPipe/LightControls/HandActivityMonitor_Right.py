@@ -1,10 +1,13 @@
 from HandRules import calcular_mao
-from TimerF import timerFunction
+
 from types import SimpleNamespace
 from collections import Counter
 
+tempoInicial = 0
+podeAgir = True
+
 tempo = 0.5
-mao_est = 0
+mao_est = 2
 braco_em_uso = 0
 tempoEstavel = []
 ft = 0
@@ -15,8 +18,9 @@ retorno = SimpleNamespace(
     posicao_correta_braco = False
 )
 
-def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo):
-    global tempo, mao_est, braco_em_uso, ft
+def HandMonitor_Right(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo):
+    global tempo, mao_est, braco_em_uso, ft, tempo_liberado, tempoInicial, podeAgir
+    
     mao = estado_mao
     #print(ombro_direito.x, ": ombro direito     !       ", pulso_direito.x, ": cotoVelo direito")
 
@@ -40,36 +44,43 @@ def HandMonitor_Left(lado_mao, estado_mao, ombro_esquerdo, ombro_direito, cotove
     
     
     if dfX_ombD_PlsD < 0.1  and dfY_ombD_PlsD < 0.1 and dfX_ctvD_ombD < 0.1 and dfY_ctvD_ombD < 0.1:
+        
         if ft == 0: retorno.posicao_correta_braco = True;ft+=1  # noqa: E701, E702
-        if not retorno.posicao_correta_braco:
-            retorno.posicao_correta_braco = True
-            print("PosiÃ§Ã£o CORRETA")
 
-        if mao == 1:   
-            mao_est = 1
-        if mao_est == 1 and mao == 0:
-            mao_est = 0
-            print("MaoFechou")
-            
-            
+        if not podeAgir:
+            tempoInicial += 1
+            if tempoInicial >= 30:
+                podeAgir = True
+                print("PODE AGIR")
+                tempoInicial = 0
+        if not retorno.posicao_correta_braco:
+            tempoInicial = 0
+            podeAgir = True
+            retorno.posicao_correta_braco = True
+            print("Posição CORRETA")
+        if mao_est == 1 and mao == 0 and podeAgir and not retorno.maoFechou:
+            print("Mão Fechou!!!")
+            podeAgir = False
             retorno.maoFechou = True
             retorno.maoAbriu = False
-            return retorno
-        
-        if mao == 0:   
-            mao_est = 0
-        if mao_est == 0 and mao == 1:
-            mao_est = 1
-            print("MoaAbriu!!")
+        elif mao_est == 0 and mao == 1 and podeAgir and not retorno.maoAbriu:
+            print("Mão Abriu!!")
+            podeAgir = False
             retorno.maoFechou = False
             retorno.maoAbriu = True
-            return retorno
-        
+
+        mao_est = mao
     else:
+        tempoInicial = 0
+        podeAgir = True
+        mao_est = 1
+        mao = 1
         
         
         if retorno.posicao_correta_braco:
-            print("PosiÃ§ao errada")
+            print("Posição errada")
+            tempoInicial = 0
+            podeAgir = True
             retorno.posicao_correta_braco = False
             
     return retorno

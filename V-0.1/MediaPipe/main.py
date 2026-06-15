@@ -1,12 +1,12 @@
 import cv2
 import mediapipe as mp
 from WakeUpSystem import verificar_postura
-from Bodyrules import analisar_postura
-from HandRules import calcular_mao
-from HandActivityMonitor_Right import HandMonitor_Right
-from HandActivityMonitor_Left import HandMonitor_Left
-from LightControl import lightControler
-from LightControl import brightControl
+from BodyControls.Bodyrules import analisar_postura
+from LightControls.HandRules import calcular_mao
+from LightControls.HandActivityMonitor_Right import HandMonitor_Right
+from LightControls.HandActivityMonitor_Left import HandMonitor_Left
+from LightControls.LightControl import lightControler
+from LightControls.LightControl import brightControl
 
 camera = cv2.VideoCapture(0)
 mp_pose = mp.solutions.pose
@@ -102,15 +102,15 @@ while True:
     if resultado.pose_landmarks and estado_mao_direita:
         handMonitorright = HandMonitor_Right(estado_mao_direita.lado,estado_mao_direita.aberta, ombro_esquerdo, ombro_direito, cotovelo_esquerdo, cotovelo_direito, pulso_direito, pulso_esquerdo)
         handMonitorright
-        print("!")
-        print(handMonitorright)
+        
+        
         light_c = lightControler(handMonitorright)
-        #print(light_c, "lightc 1")
-        print("@")
+        
+        
         if light_c != None and light_c != 0:
-            print(light_c, "lightc 2")
-            #text_light = light_c
-            print("#")
+            
+            text_light = light_c
+            
 
         
     if resultado.pose_landmarks and estado_mao_esquerda:

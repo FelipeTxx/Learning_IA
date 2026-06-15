@@ -1,0 +1,121 @@
+{
+    "timestamp": 1781117177.8682215,
+    "devices": [
+        {
+            "id": "eb6cf639a85ba6907by7ss",
+            "ip": "192.168.0.109",
+            "uuid": "3d9a066821915b32",
+            "active": 2,
+            "encrypt": true,
+            "productKey": "key4sxquh7gt88ay",
+            "token": true,
+            "wf_cfg": true,
+            "sl": 0,
+            "clientLink": 3,
+            "name": "Felipe's Light bedroom",
+            "key": "CGBlNgA==+v~1Lqc",
+            "mac": "00:33:7a:5e:d3:44",
+            "ability": 0,
+            "dev_type": "default",
+            "err": "",
+            "type": "default",
+            "dps": {
+                "dps": {
+                    "20": true,
+                    "21": "white",
+                    "22": 10,
+                    "23": 0,
+                    "24": "013a03e803e8",
+                    "25": "020e0d0000000000000003e803e8",
+                    "26": 0,
+                    "34": false
+                }
+            },
+            "origin": "broadcast",
+            "ver": "3.5"
+        },
+        {
+            "id": "eb3709d3ce82370ee9xiqf",
+            "ip": "192.168.0.103",
+            "active": 2,
+            "encrypt": true,
+            "productKey": "keyk9uwr9vqw87ak",
+            "name": "",
+            "key": "",
+            "mac": "",
+            "ability": 0,
+            "token": "",
+            "wf_cfg": "",
+            "dev_type": "default",
+            "origin": "broadcast",
+            "ver": "3.3"
+        },
+        {
+            "id": "eba5dee2pthravdj",
+            "name": "Lampada Smart Bulb RGB Bluetooth A3001",
+            "key": "65CC95DFEE111891",
+            "mac": "DC:23:4F:11:F0:49",
+            "uuid": "uuid943f398ddcc2",
+            "category": "dj",
+            "product_name": "Lampada Smart Bulb RGB Bluetooth A3001",
+            "product_id": "z0oy0gut",
+            "biz_type": 18,
+            "model": "A3001",
+            "sub": false,
+            "icon": "https://images.tuyaus.com/smart/icon/bay1624640231943D3Zm/ef72029f04579a8907a6a4ccfc1307df.jpg",
+            "mapping": {
+                "1": {
+                    "code": "switch_led",
+                    "type": "Boolean",
+                    "values": {}
+                },
+                "2": {
+                    "code": "work_mode",
+                    "type": "Enum",
+                    "values": {
+                        "range": [
+                            "white",
+                            "colour",
+                            "scene",
+                            "music"
+                        ]
+                    }
+                },
+                "3": {
+                    "code": "bright_value_v2",
+                    "type": "Integer",
+                    "values": {
+                        "min": 10,
+                        "max": 1000,
+                        "scale": 0,
+                        "step": 1
+                    }
+                },
+                "4": {
+                    "code": "temp_value_v2",
+                    "type": "Integer",
+                    "values": {
+                        "min": 0,
+                        "max": 1000,
+                        "scale": 0,
+                        "step": 1
+                    }
+                },
+                "7": {
+                    "code": "countdown_1",
+                    "type": "Integer",
+                    "values": {
+                        "unit": "s",
+                        "min": 0,
+                        "max": 86400,
+                        "scale": 0,
+                        "step": 1
+                    }
+                }
+            },
+            "ip": "",
+            "origin": "cloud",
+            "ver": ""
+        }
+    ]
+}
